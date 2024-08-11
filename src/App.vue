@@ -6,17 +6,17 @@ import { Label } from '@/components/ui/label'
 import {
   Dialog,
   DialogContent,
-  DialogDescription,
   DialogFooter,
   DialogHeader,
   DialogTitle,
   DialogTrigger,
   DialogClose,
 } from '@/components/ui/dialog'
+import { Expense } from '@/types/expense.ts'
 import ExpenseList from '@/components/ExpenseList.vue'
 
 const budget = ref<string>(localStorage.getItem('budget') || '')
-const budgetSetted = ref<boolean>(localStorage.getItem('budgetSetted') || false)
+const budgetSetted = ref<string | boolean>(localStorage.getItem('budgetSetted') || false)
 const newExpense = ref<string>("")
 const newPrice = ref<string>('')
 const expenses = ref<Expense[]>([
@@ -60,7 +60,7 @@ function handleSubmit() {
     budgetSetted.value = true
     budget.value = parsedBudget.toFixed(2)
     localStorage.setItem('budget', budget.value)
-    localStorage.setItem('budgetSetted', budgetSetted.value)
+    localStorage.setItem('budgetSetted', budgetSetted.value.toString())
   }
 }
 
