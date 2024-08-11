@@ -103,7 +103,7 @@ function cleanLS(event: any) {
       <Button v-if="budget === ''" disabled class="w-full">Valider</Button>
       <Button v-else type="submit" class="w-full" @click="handleSubmit">Valider</Button>
     </div>
-    <div v-else class="w-full absolute top-20 flex flex-col justify-center items-center gap-20 px-5">
+    <div v-else class="w-full absolute top-30 flex flex-col justify-center items-center gap-20 px-5">
       <div class="flex flex-col justify-center items-center gap-8 w-full">
         <p class="text-3xl font-semibold">{{ budget }} €</p>
         <Button variant="destructive" @click="cleanLS" class="w-full">Logout</Button>
@@ -155,7 +155,9 @@ function cleanLS(event: any) {
           </DialogContent>
         </Dialog>
       </div>
-      <ExpenseList :expenses="expenses" />
+      <div class="h-[500px] overflow-scroll w-full">
+        <ExpenseList :expenses="expenses" />
+      </div>
     </div>
   </div>
 </template>
