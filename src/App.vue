@@ -155,9 +155,7 @@ function cleanLS(event: any) {
           </DialogContent>
         </Dialog>
       </div>
-      <div class="h-[500px] overflow-scroll w-full">
-        <ExpenseList :expenses="expenses" />
-      </div>
+      <ExpenseList :expenses="expenses" />
     </div>
   </div>
 </template>
