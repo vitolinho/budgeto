@@ -16,7 +16,7 @@
         <Button v-else type="submit" class="w-full" @click="ValidateInitialBudget">Valider</Button>
       </div>
     </div>
-    <div v-else class="w-full mt-20 sm:max-w-[600px] flex flex-col justify-center items-center gap-20 px-5 overflow-y-scroll">
+    <div v-else class="w-full mt-20 sm:max-w-[600px] flex flex-col justify-center items-center gap-20 px-5">
       <div class="flex flex-col justify-center items-center gap-8 w-full">
         <p class="text-3xl font-semibold">{{ remainingBudget }} €</p>
         <Button variant="destructive" @click="cleanLS" class="w-full">Supprimer le budget en cours</Button>
