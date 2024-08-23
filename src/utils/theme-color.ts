@@ -548,10 +548,10 @@ const themes: Themes = {
 }
 
 
-export default function setGlobalColorTheme(themeMode: 'light' | 'dark', color: any) {
+export default function setGlobalColorTheme(themeMode: 'light' | 'dark', color: string) {
   const theme: Theme = themes[color][themeMode]
   for (const key in theme) {
-    if (color === "green") {
+    if (color === "green" && themeMode === 'light') {
       document.documentElement.style.removeProperty(`--${key}`)
     } else {
       document.documentElement.style.setProperty(`--${key}`, theme[key])

@@ -15,5 +15,8 @@ defineProps<{
       :id="expense.id"
       :key="expense.id"
     />
+    <div v-if="expenses.length > 8" class="h-[200px] w-full flex justify-center items-start pt-10">
+      <p>&#169; Budgeto - Vitomir Laces, 2024</p>
+    </div>
   </div>
 </template>
