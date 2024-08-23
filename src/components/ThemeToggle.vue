@@ -88,7 +88,7 @@ import {
 } from '@/components/ui/select'
 import setGlobalColorTheme from '../utils/theme-color.ts'
 
-const themeColor = ref(localStorage.getItem('theme-color') || 'slate')
+const themeColor = ref(localStorage.getItem('theme-color') || 'green')
 
 watch(themeColor, (newThemeColor) => {
   localStorage.setItem('theme-color', newThemeColor)
