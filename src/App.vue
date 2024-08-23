@@ -67,7 +67,7 @@
         </Dialog>
       </div>
       <ExpenseList v-if="expenses.length > 0" :expenses="expenses" />
-      <p v-else>Mashallah tu as rien dépensé</p>
+      <p v-else>Mashallah tu n&apos;as rien dépensé</p>
     </div>
   </div>
 </template>
