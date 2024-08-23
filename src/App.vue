@@ -88,6 +88,7 @@ import {
 } from '@/components/ui/dialog'
 import { Expense } from '@/types/expense.ts'
 import ExpenseList from '@/components/ExpenseList.vue'
+import setGlobalColorTheme from './utils/theme-color.ts'
 
 // this is user initial budget
 const budget = ref<string>(localStorage.getItem('budget') || '')
@@ -102,8 +103,16 @@ const expenses = ref<Expense[]>([])
 // This is stored expenses 
 const storedExpenses = localStorage.getItem('expenses')
 
-// Getting all stored expenses and apply them to expenses's ref
+// Apply stored app theme Getting & all stored expenses and apply them to expenses's ref
 onMounted(() => {
+  let themeMode = localStorage.getItem('vueuse-color-scheme')
+  const themeColor = localStorage.getItem('theme-color')
+  if (themeMode === 'auto') {
+    themeMode = 'light'
+  }
+  if (themeColor && (themeMode === 'light' || themeMode === 'dark')) {
+    setGlobalColorTheme(themeMode, themeColor)
+  }
   if (storedExpenses) {
     try {
       expenses.value = JSON.parse(storedExpenses)

@@ -14,20 +14,27 @@
       <DropdownMenuItem @click="mode = 'dark'">
         Sombre
       </DropdownMenuItem>
-      <DropdownMenuItem @click="mode = 'auto'">
-        Système
-      </DropdownMenuItem>
     </DropdownMenuContent>
   </DropdownMenu>
 </template>
 
 <script setup lang="ts">
+import { watch } from 'vue'
 import { useColorMode } from '@vueuse/core'
 import { Icon } from '@iconify/vue'
 import { Button } from '@/components/ui/button'
 import { DropdownMenu, DropdownMenuContent, DropdownMenuItem, DropdownMenuTrigger } from '@/components/ui/dropdown-menu'
+import setGlobalColorTheme from '../utils/theme-color'
 
 const mode = useColorMode({
   disableTransition: false
+})
+
+watch(mode, (newMode) => {
+  const themeColor = localStorage.getItem('theme-color')
+  if (newMode === 'auto') return
+  if (themeColor && (newMode === 'light' || newMode === 'dark')) {
+    setGlobalColorTheme(newMode, themeColor)
+  }
 })
 </script>
