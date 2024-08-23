@@ -1,92 +1,3 @@
-<script setup lang="ts">
-import { ref } from 'vue'
-import { Button } from '@/components/ui/button'
-import { Input } from '@/components/ui/input'
-import { Label } from '@/components/ui/label'
-import {
-  Dialog,
-  DialogContent,
-  DialogFooter,
-  DialogHeader,
-  DialogTitle,
-  DialogTrigger,
-  DialogClose,
-} from '@/components/ui/dialog'
-import { Expense } from '@/types/expense.ts'
-import ExpenseList from '@/components/ExpenseList.vue'
-
-const budget = ref<string>(localStorage.getItem('budget') || '')
-const budgetSetted = ref<string | boolean>(localStorage.getItem('budgetSetted') || false)
-const newExpense = ref<string>("")
-const newPrice = ref<string>('')
-const expenses = ref<Expense[]>([
-  {
-    id: 1,
-    expense: "Rent",
-    cost: 1200,
-  },
-  {
-    id: 2,
-    expense: "Groceries",
-    cost: 300,
-  },
-  {
-    id: 3,
-    expense: "Utilities",
-    cost: 150,
-  },
-  {
-    id: 4,
-    expense: "Internet",
-    cost: 50,
-  },
-  {
-    id: 5,
-    expense: "Transportation",
-    cost: 100,
-  }
-])
-
-function checkDigit(event: KeyboardEvent) {
-  const allowedKeys = ['Backspace', 'Tab', 'Enter', 'ArrowLeft', 'ArrowRight', 'Delete', '.', ',']
-  if (!allowedKeys.includes(event.key) && isNaN(Number(event.key))) {
-    event.preventDefault()
-  }
-}
-
-function handleSubmit() {
-  const parsedBudget = parseFloat(budget.value.replace(',', '.'))
-  if (!isNaN(parsedBudget)) {
-    budgetSetted.value = true
-    budget.value = parsedBudget.toFixed(2)
-    localStorage.setItem('budget', budget.value)
-    localStorage.setItem('budgetSetted', budgetSetted.value.toString())
-  }
-}
-
-function AddNewExpense() {
-  if (newExpense.value.trim() !== "" && newPrice.value.trim() !== "") {
-    const parsedPrice = parseFloat(newPrice.value.replace(',', '.'))
-    if (!isNaN(parsedPrice)) {
-      expenses.value.push({
-        id: expenses.value.length + 1,
-        expense: newExpense.value,
-        cost: parsedPrice
-      })
-      newExpense.value = ""
-      newPrice.value = ""
-    }
-  }
-}
-
-function cleanLS(event: any) {
-  event.preventDefault()
-  localStorage.removeItem('budget')
-  localStorage.removeItem('budgetSetted')
-  location.reload()
-}
-</script>
-
 <template>
   <div class="w-full h-screen flex justify-center items-center px-5">
     <div v-if="!budgetSetted" class="w-full flex flex-col gap-5">
@@ -101,12 +12,12 @@ function cleanLS(event: any) {
           placeholder="Entrez votre budget" />
       </div>
       <Button v-if="budget === ''" disabled class="w-full">Valider</Button>
-      <Button v-else type="submit" class="w-full" @click="handleSubmit">Valider</Button>
+      <Button v-else type="submit" class="w-full" @click="ValidateInitialBudget">Valider</Button>
     </div>
     <div v-else class="w-full absolute top-30 flex flex-col justify-center items-center gap-20 px-5">
       <div class="flex flex-col justify-center items-center gap-8 w-full">
-        <p class="text-3xl font-semibold">{{ budget }} €</p>
-        <Button variant="destructive" @click="cleanLS" class="w-full">Logout</Button>
+        <p class="text-3xl font-semibold">{{ remainingBudget }} €</p>
+        <Button variant="destructive" @click="cleanLS" class="w-full">Initialiser nouveau budget et supprimer celui en cours</Button>
         <Dialog>
           <DialogTrigger as-child>
             <Button class="w-full">
@@ -145,17 +56,121 @@ function cleanLS(event: any) {
                   disabled
                   class="w-full"
                 >
-                  Save changes
+                  Ajouter dépense
                 </Button>
                 <Button v-else type="button" @click="AddNewExpense" class="w-full">
-                  Save changes
+                  Ajouter dépense
                 </Button>
               </DialogClose>
             </DialogFooter>
           </DialogContent>
         </Dialog>
       </div>
-      <ExpenseList :expenses="expenses" />
+      <ExpenseList v-if="expenses.length > 0" :expenses="expenses" />
+      <p v-else>Mashallah tu as rien dépensé</p>
     </div>
   </div>
 </template>
+
+<script setup lang="ts">
+import { ref, computed, watch, onMounted } from 'vue'
+import { Button } from '@/components/ui/button'
+import { Input } from '@/components/ui/input'
+import { Label } from '@/components/ui/label'
+import {
+  Dialog,
+  DialogContent,
+  DialogFooter,
+  DialogHeader,
+  DialogTitle,
+  DialogTrigger,
+  DialogClose,
+} from '@/components/ui/dialog'
+import { Expense } from '@/types/expense.ts'
+import ExpenseList from '@/components/ExpenseList.vue'
+
+// this is user initial budget
+const budget = ref<string>(localStorage.getItem('budget') || '')
+// this is a boolean that says if user setted or not his initial budget
+const budgetSetted = ref<string | boolean>(localStorage.getItem('budgetSetted') || false)
+// This is a ref for this expense input
+const newExpense = ref<string>("")
+// This is a ref for this price input
+const newPrice = ref<string>('')
+// This is a ref of the expenses 
+const expenses = ref<Expense[]>([])
+// This is stored expenses 
+const storedExpenses = localStorage.getItem('expenses')
+
+// Getting all stored expenses and apply them to expenses's ref
+onMounted(() => {
+  if (storedExpenses) {
+    try {
+      expenses.value = JSON.parse(storedExpenses)
+    } catch (error) {
+      console.error('Invalid expenses data in localStorage', error)
+    }
+  }
+})
+
+// This calculate all the expenses costs
+const totalExpenses = computed(() => {
+  return expenses.value.reduce((total, expense) => total + expense.cost, 0)
+})
+
+// This calculate the initial budget minus the total expenses
+const remainingBudget = computed(() => {
+  const parsedBudget = parseFloat(budget.value)
+  return isNaN(parsedBudget) ? 0 : parsedBudget - totalExpenses.value
+})
+
+// This function is checking if the user is entering a digit or not
+function checkDigit(event: KeyboardEvent) {
+  const allowedKeys = ['Backspace', 'Tab', 'Enter', 'ArrowLeft', 'ArrowRight', 'Delete', '.', ',']
+  if (!allowedKeys.includes(event.key) && isNaN(Number(event.key))) {
+    event.preventDefault()
+  }
+}
+
+// This function validate and set the initial budget of the use
+function ValidateInitialBudget() {
+  const parsedBudget = parseFloat(budget.value.replace(',', '.'))
+  if (!isNaN(parsedBudget)) {
+    budgetSetted.value = true
+    budget.value = parsedBudget.toFixed(2)
+    localStorage.setItem('budget', budget.value)
+    localStorage.setItem('budgetSetted', budgetSetted.value.toString())
+  }
+}
+
+// This function handle the adding of a new expense
+function AddNewExpense() {
+  if (newExpense.value.trim() !== "" && newPrice.value.trim() !== "") {
+    const parsedPrice = parseFloat(newPrice.value.replace(',', '.'))
+    if (!isNaN(parsedPrice)) {
+      expenses.value.push({
+        id: expenses.value.length + 1,
+        expense: newExpense.value,
+        cost: parsedPrice
+      })
+      localStorage.setItem('expenses', JSON.stringify(expenses.value))
+      newExpense.value = ""
+      newPrice.value = ""
+    }
+  }
+}
+
+// This function clean the local storage and permits to users to create new inital budget
+function cleanLS(event: any) {
+  event.preventDefault()
+  localStorage.removeItem('budget')
+  localStorage.removeItem('budgetSetted')
+  localStorage.removeItem('expenses')
+  location.reload()
+}
+
+// This watcher is setting expenses to localStorage if there are new expenses
+watch(expenses, (newExpenses) => {
+  localStorage.setItem('expenses', JSON.stringify(newExpenses))
+})
+</script>
