@@ -1,6 +1,6 @@
 <template>
   <div class="w-full h-screen flex justify-center items-center px-5">
-    <div v-if="!budgetSetted" class="w-full flex flex-col gap-5">
+    <div v-if="!budgetSetted" class="w-full sm:max-w-[600px] flex flex-col gap-5">
       <div class="gap-4 flex flex-col">
         <Label>Budget</Label>
         <Input
@@ -14,7 +14,7 @@
       <Button v-if="budget === ''" disabled class="w-full">Valider</Button>
       <Button v-else type="submit" class="w-full" @click="ValidateInitialBudget">Valider</Button>
     </div>
-    <div v-else class="w-full absolute top-30 flex flex-col justify-center items-center gap-20 px-5">
+    <div v-else class="w-full sm:max-w-[600px] absolute top-30 flex flex-col justify-center items-center gap-20 px-5">
       <div class="flex flex-col justify-center items-center gap-8 w-full">
         <p class="text-3xl font-semibold">{{ remainingBudget }} €</p>
         <Button variant="destructive" @click="cleanLS" class="w-full">Initialiser nouveau budget et supprimer celui en cours</Button>
