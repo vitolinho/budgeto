@@ -19,7 +19,7 @@
     <div v-else class="w-full mt-20 sm:max-w-[600px] flex flex-col justify-center items-center gap-20 px-5 overflow-y-scroll">
       <div class="flex flex-col justify-center items-center gap-8 w-full">
         <p class="text-3xl font-semibold">{{ remainingBudget }} €</p>
-        <Button variant="destructive" @click="cleanLS" class="w-full">Initialiser nouveau budget et supprimer celui en cours</Button>
+        <Button variant="destructive" @click="cleanLS" class="w-full">Supprimer le budget en cours</Button>
         <Dialog>
           <DialogTrigger as-child>
             <Button class="w-full">
