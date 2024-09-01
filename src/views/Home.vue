@@ -1,6 +1,9 @@
 <template>
   <div class="flex justify-center items-center px-5">
-    <div v-if="!budgetSetted" class="w-full h-screen flex flex-col justify-center items-center">
+    <div
+      v-if="!budgetSetted"
+      class="w-full h-screen flex flex-col justify-center items-center"
+    >
       <div class="w-full sm:max-w-[600px] flex flex-col gap-5">
         <div class="gap-4 flex flex-col">
           <Label>Budget</Label>
@@ -9,21 +12,31 @@
             type="text"
             pattern="[0-9]+"
             @keydown="checkDigit"
-            placeholder="Entrez votre budget" />
+            placeholder="Entrez votre budget"
+          />
         </div>
         <Button v-if="budget === ''" disabled class="w-full">Valider</Button>
-        <Button v-else type="submit" class="w-full" @click="ValidateInitialBudget">Valider</Button>
+        <Button
+          v-else
+          type="submit"
+          class="w-full"
+          @click="ValidateInitialBudget"
+          >Valider</Button
+        >
       </div>
     </div>
-    <div v-else class="w-full mt-20 sm:max-w-[600px] flex flex-col justify-center items-center gap-20 px-5">
+    <div
+      v-else
+      class="w-full mt-20 sm:max-w-[600px] flex flex-col justify-center items-center gap-20 px-5"
+    >
       <div class="flex flex-col justify-center items-center gap-8 w-full">
         <p class="text-3xl font-semibold">{{ remainingBudget.toFixed(2) }} €</p>
-        <Button variant="destructive" @click="cleanLS" class="w-full">Supprimer le budget en cours</Button>
+        <Button variant="destructive" @click="cleanLS" class="w-full"
+          >Supprimer le budget en cours</Button
+        >
         <Dialog>
           <DialogTrigger as-child>
-            <Button class="w-full">
-              Ajouter une dépense
-            </Button>
+            <Button class="w-full"> Ajouter une dépense </Button>
           </DialogTrigger>
           <DialogContent>
             <DialogHeader>
@@ -31,15 +44,11 @@
             </DialogHeader>
             <div class="grid gap-4 py-4">
               <div class="flex flex-col items-start gap-4">
-                <Label for="depense" class="text-right">
-                  Dépense
-                </Label>
+                <Label for="depense" class="text-right"> Dépense </Label>
                 <Input v-model="newExpense" class="col-span-3" />
               </div>
               <div class="flex flex-col items-start gap-4">
-                <Label for="prix" class="text-right">
-                  Prix
-                </Label>
+                <Label for="prix" class="text-right"> Prix </Label>
                 <Input
                   v-model="newPrice"
                   type="text"
@@ -49,9 +58,7 @@
                 />
               </div>
               <div class="flex flex-col items-start gap-4">
-                <Label for="quantity" class="text-right">
-                  Quantity
-                </Label>
+                <Label for="quantity" class="text-right"> Quantity </Label>
                 <Input
                   v-model="newQuantity"
                   type="text"
@@ -71,7 +78,12 @@
                 >
                   Ajouter dépense
                 </Button>
-                <Button v-else type="button" @click="AddNewExpense" class="w-full">
+                <Button
+                  v-else
+                  type="button"
+                  @click="AddNewExpense"
+                  class="w-full"
+                >
                   Ajouter dépense
                 </Button>
               </DialogClose>
@@ -97,7 +109,7 @@ import {
   DialogHeader,
   DialogTitle,
   DialogTrigger,
-  DialogClose,
+  DialogClose
 } from '@/components/ui/dialog'
 import { Expense } from '@/types/expense.ts'
 import ExpenseList from '@/components/ExpenseList.vue'
@@ -105,16 +117,18 @@ import ExpenseList from '@/components/ExpenseList.vue'
 // this is user initial budget
 const budget = ref<string>(localStorage.getItem('budget') || '')
 // this is a boolean that says if user setted or not his initial budget
-const budgetSetted = ref<string | boolean>(localStorage.getItem('budgetSetted') || false)
+const budgetSetted = ref<string | boolean>(
+  localStorage.getItem('budgetSetted') || false
+)
 // This is a ref for this expense input
-const newExpense = ref<string>("")
+const newExpense = ref<string>('')
 // This is a ref for this price input
 const newPrice = ref<string>('')
 // This is a ref for this quantity input
 const newQuantity = ref<string>('')
-// This is a ref of the expenses 
+// This is a ref of the expenses
 const expenses = ref<Expense[]>([])
-// This is stored expenses 
+// This is stored expenses
 const storedExpenses = localStorage.getItem('expenses')
 
 // Apply all stored expenses and apply them to expenses's ref
@@ -130,7 +144,10 @@ onMounted(() => {
 
 // This calculate all the expenses costs
 const totalExpenses = computed(() => {
-  return expenses.value.reduce((total, expense) => total + expense.cost * Number(expense.quantity), 0)
+  return expenses.value.reduce(
+    (total, expense) => total + expense.cost * Number(expense.quantity),
+    0
+  )
 })
 
 // This calculate the initial budget minus the total expenses
@@ -141,7 +158,16 @@ const remainingBudget = computed(() => {
 
 // This function is checking if the user is entering a digit or not
 function checkDigit(event: KeyboardEvent) {
-  const allowedKeys = ['Backspace', 'Tab', 'Enter', 'ArrowLeft', 'ArrowRight', 'Delete', '.', ',']
+  const allowedKeys = [
+    'Backspace',
+    'Tab',
+    'Enter',
+    'ArrowLeft',
+    'ArrowRight',
+    'Delete',
+    '.',
+    ','
+  ]
   if (!allowedKeys.includes(event.key) && isNaN(Number(event.key))) {
     event.preventDefault()
   }
@@ -160,7 +186,7 @@ function ValidateInitialBudget() {
 
 // This function handle the adding of a new expense
 function AddNewExpense() {
-  if (newExpense.value.trim() !== "" && newPrice.value.trim() !== "") {
+  if (newExpense.value.trim() !== '' && newPrice.value.trim() !== '') {
     const parsedPrice = parseFloat(newPrice.value.replace(',', '.'))
     if (!isNaN(parsedPrice)) {
       expenses.value.push({
@@ -170,9 +196,9 @@ function AddNewExpense() {
         quantity: newQuantity.value === '' ? '1' : newQuantity.value
       })
       localStorage.setItem('expenses', JSON.stringify(expenses.value))
-      newExpense.value = ""
-      newPrice.value = ""
-      newQuantity.value = ""
+      newExpense.value = ''
+      newPrice.value = ''
+      newQuantity.value = ''
     }
   }
 }

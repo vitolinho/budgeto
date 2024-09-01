@@ -16,7 +16,7 @@ onMounted(() => {
   }
   if (themeColor && (themeMode === 'light' || themeMode === 'dark')) {
     setGlobalColorTheme(themeMode, themeColor)
-  } else if(!themeColor && themeMode === 'dark') {
+  } else if (!themeColor && themeMode === 'dark') {
     setGlobalColorTheme(themeMode, 'green')
   }
 })

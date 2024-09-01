@@ -6,12 +6,17 @@
   "scripts": {
     "dev": "vite",
     "build": "vue-tsc -b && vite build",
-    "preview": "vite preview"
+    "preview": "vite preview",
+    "lint": "eslint . --report-unused-disable-directives --max-warnings 0",
+    "lint:fix": "eslint . --report-unused-disable-directives --max-warnings 0 --fix",
+    "format": "prettier .  --write"
   },
   "dependencies": {
     "@vueuse/core": "^10.11.1",
     "class-variance-authority": "^0.7.0",
     "clsx": "^2.1.1",
+    "eslint-define-config": "^2.1.0",
+    "eslint-plugin-tailwindcss": "^3.17.4",
     "lucide-vue-next": "^0.427.0",
     "radix-vue": "^1.9.3",
     "tailwind-merge": "^2.4.0",
@@ -25,6 +30,10 @@
     "@types/node": "^22.2.0",
     "@vitejs/plugin-vue": "^5.1.2",
     "autoprefixer": "^10.4.20",
+    "eslint": "^9.9.1",
+    "eslint-config-prettier": "^9.1.0",
+    "eslint-plugin-vue": "^9.27.0",
+    "prettier": "3.3.3",
     "tailwindcss": "^3.4.9",
     "typescript": "^5.5.3",
     "vite": "^5.4.0",

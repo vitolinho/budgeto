@@ -90,7 +90,7 @@ import {
   SelectGroup,
   SelectItem,
   SelectTrigger,
-  SelectValue,
+  SelectValue
 } from '@/components/ui/select'
 import setGlobalColorTheme from '../utils/theme-color.ts'
 
