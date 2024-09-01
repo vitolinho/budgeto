@@ -71,6 +71,12 @@
             <span>Violet</span>
           </div>
         </SelectItem>
+        <SelectItem value="roseBonbon">
+          <div class="flex gap-3 items-center">
+            <div class="size-3 bg-[#ffd3de] rounded-full"></div>
+            <span>Rose bonbon</span>
+          </div>
+        </SelectItem>
       </SelectGroup>
     </SelectContent>
   </Select>
