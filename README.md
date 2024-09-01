@@ -23,3 +23,4 @@ Budgeto stack:
 - [Vue.js](https://vuejs.org/) - JavaScript Library
 - [Shadcn-vue](https://www.shadcn-vue.com/) - UI Component Library
 - [Tailwindcss](https://tailwindcss.com/) - CSS Framework
+- Deployed with [Vercel](https://vercel.com/)
