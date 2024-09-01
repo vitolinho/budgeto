@@ -1,5 +1,6 @@
 export interface Expense {
   id: number,
   expense: string,
-  cost: number 
+  cost: number,
+  quantity: string
 }

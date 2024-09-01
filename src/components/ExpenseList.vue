@@ -12,6 +12,7 @@ defineProps<{
       v-for="(expense) in expenses"
       :expense="expense.expense"
       :cost="expense.cost"
+      :quantity="expense.quantity"
       :id="expense.id"
       :key="expense.id"
     />

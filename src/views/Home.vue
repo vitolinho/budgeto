@@ -7,7 +7,6 @@
           <Input
             v-model="budget"
             type="text"
-            inputmode="numeric"
             pattern="[0-9]+"
             @keydown="checkDigit"
             placeholder="Entrez votre budget" />
@@ -43,6 +42,18 @@
                 </Label>
                 <Input
                   v-model="newPrice"
+                  type="text"
+                  pattern="[0-9]+"
+                  @keydown="checkDigit"
+                  class="col-span-3"
+                />
+              </div>
+              <div class="flex flex-col items-start gap-4">
+                <Label for="quantity" class="text-right">
+                  Quantity
+                </Label>
+                <Input
+                  v-model="newQuantity"
                   type="text"
                   inputmode="numeric"
                   pattern="[0-9]+"
@@ -99,6 +110,8 @@ const budgetSetted = ref<string | boolean>(localStorage.getItem('budgetSetted') 
 const newExpense = ref<string>("")
 // This is a ref for this price input
 const newPrice = ref<string>('')
+// This is a ref for this quantity input
+const newQuantity = ref<string>('')
 // This is a ref of the expenses 
 const expenses = ref<Expense[]>([])
 // This is stored expenses 
@@ -117,7 +130,7 @@ onMounted(() => {
 
 // This calculate all the expenses costs
 const totalExpenses = computed(() => {
-  return expenses.value.reduce((total, expense) => total + expense.cost, 0)
+  return expenses.value.reduce((total, expense) => total + expense.cost * Number(expense.quantity), 0)
 })
 
 // This calculate the initial budget minus the total expenses
@@ -153,11 +166,13 @@ function AddNewExpense() {
       expenses.value.push({
         id: expenses.value.length + 1,
         expense: newExpense.value,
-        cost: parsedPrice
+        cost: parsedPrice,
+        quantity: newQuantity.value === '' ? '1' : newQuantity.value
       })
       localStorage.setItem('expenses', JSON.stringify(expenses.value))
       newExpense.value = ""
       newPrice.value = ""
+      newQuantity.value = ""
     }
   }
 }
