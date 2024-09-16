@@ -31,6 +31,7 @@
     >
       <div class="flex flex-col justify-center items-center gap-8 w-full">
         <p class="text-3xl font-semibold">{{ remainingBudget.toFixed(2) }} €</p>
+        <p class="text-xl text-foreground/30">{{ totalExpenses.toFixed(2) }} €</p>
         <Button variant="destructive" @click="cleanLS" class="w-full"
           >Supprimer le budget en cours</Button
         >
