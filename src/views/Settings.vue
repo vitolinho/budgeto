@@ -46,10 +46,7 @@ import ThemeToggle from '../components/ThemeToggle.vue'
 
 const deleteUserData = (event: any) => {
   event.preventDefault()
-  localStorage.removeItem('budget')
-  localStorage.removeItem('budgetSetted')
-  localStorage.removeItem('expenses')
-  localStorage.removeItem('budgets')
+  localStorage.clear()
   location.reload()
 }
 </script>
