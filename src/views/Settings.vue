@@ -31,6 +31,7 @@
 </template>
 
 <script setup lang="ts">
+import { useRouter } from 'vue-router'
 import { Button } from '@/components/ui/button'
 import {
   Dialog,
@@ -44,9 +45,11 @@ import {
 import ModeToggle from '../components/ModeToggle.vue'
 import ThemeToggle from '../components/ThemeToggle.vue'
 
+const router = useRouter()
+
 const deleteUserData = (event: any) => {
   event.preventDefault()
   localStorage.clear()
-  location.reload()
+  router.push({ path: '/' })
 }
 </script>
