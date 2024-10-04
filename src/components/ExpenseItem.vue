@@ -1,7 +1,6 @@
 <script setup lang="ts">
-import { Coins } from 'lucide-vue-next'
 defineProps<{
-  id: number
+  id: string
   expense: string
   cost: number
   quantity: string
@@ -12,14 +11,11 @@ defineProps<{
   <div
     class="border flex justify-between items-center px-2 py-2 w-full rounded-md"
   >
-    <div class="flex gap-3 items-center">
-      <Coins />
-      <p class="uppercase font-semibold">
-        {{ expense }}
-        <span class="lowercase">x</span>
-        {{ quantity }}
-      </p>
-    </div>
+    <p class="uppercase font-semibold text-ellipsis line-clamp-1">
+      {{ quantity }}
+      <span class="lowercase">x</span>
+      {{ expense }}
+    </p>
     <p>-{{ (cost * Number(quantity)).toFixed(2) }}€</p>
   </div>
 </template>
