@@ -10,7 +10,7 @@ export { default as SheetDescription } from './SheetDescription.vue'
 export { default as SheetFooter } from './SheetFooter.vue'
 
 export const sheetVariants = cva(
-  'fixed rounded-t-md z-50 gap-4 h-full bg-background p-6 shadow-lg transition ease-in-out data-[state=open]:animate-in data-[state=closed]:animate-out data-[state=closed]:duration-300 data-[state=open]:duration-500',
+  'fixed rounded-t-md z-50 gap-4 h-5/6 bg-background p-6 shadow-lg transition ease-in-out data-[state=open]:animate-in data-[state=closed]:animate-out data-[state=closed]:duration-300 data-[state=open]:duration-500',
   {
     variants: {
       side: {
